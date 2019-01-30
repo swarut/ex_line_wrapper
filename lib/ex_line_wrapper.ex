@@ -1,6 +1,7 @@
 defmodule ExLineWrapper do
 
   @oauth_endpoint "https://api.line.me/v2/oauth/accessToken"
+  @message_endpoint "https://api.line.me/v2/bot/message/reply"
 
   @moduledoc """
   Documentation for ExLineWrapper.
@@ -34,6 +35,32 @@ defmodule ExLineWrapper do
         Jason.decode(body)
       {:error, err} ->
         {:error, err}
+    end
+  end
+
+  @doc """
+  Reply a message
+
+  ## Examples
+      iex > ExLineWrapper.reply("message", "reply_token", "access_token")
+      {:ok}
+  """
+  def reply(message, reply_token, access_token) do
+    header = [
+      {"Content-Type", "application/json"},
+      {"Authorization", "Bearer dsfdsf#{access_token}"}
+    ]
+    {:ok, body} = Jason.encode(%{
+      replyToken: reply_token,
+      messages: [%{
+        type: "text",
+        text: message
+      }]
+    })
+    case HTTPoison.post @message_endpoint, body, header do
+      {:ok, %HTTPoison.Response{status_code: 401}} -> {:error}
+      {:ok, %HTTPoison.Response{status_code: 200}} -> {:ok}
+      {:error, _err} -> {:error}
     end
   end
 end
