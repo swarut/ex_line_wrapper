@@ -7,7 +7,6 @@ defmodule ExLineWrapper do
   Documentation for ExLineWrapper.
   """
 
-
   @doc """
   Acquire access token
 
@@ -26,12 +25,10 @@ defmodule ExLineWrapper do
     })
     IO.puts("body = #{inspect body}")
     case HTTPoison.post @oauth_endpoint, body, header do
-      {:ok, resp = %HTTPoison.Response{status_code: 400, body: body}} ->
-        IO.puts("STATUS 400: Unauthorized --- #{inspect resp}")
+      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
         {:ok, body} = Jason.decode(body)
         {:error, body}
-      {:ok, resp = %HTTPoison.Response{status_code: 200, body: body}} ->
-        IO.puts("SENNNTTTT #{inspect resp}")
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         Jason.decode(body)
       {:error, err} ->
         {:error, err}
@@ -48,7 +45,7 @@ defmodule ExLineWrapper do
   def reply(message, reply_token, access_token) do
     header = [
       {"Content-Type", "application/json"},
-      {"Authorization", "Bearer dsfdsf#{access_token}"}
+      {"Authorization", "Bearer #{access_token}"}
     ]
     {:ok, body} = Jason.encode(%{
       replyToken: reply_token,
