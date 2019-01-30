@@ -11,8 +11,8 @@ defmodule ExLineWrapper do
   Acquire access token
 
   ## Examples
-    iex> ExLineWrapper.authenticate("channel_id", "channel_secret")
-    {:ok, %{"access_token" => "xxxxxx"}}
+      iex> ExLineWrapper.authenticate("channel_id", "channel_secret")
+      {:ok, %{"access_token" => "xxxxxx"}}
   """
   def authenticate(channel_id, channel_secret) do
     header = [
