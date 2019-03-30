@@ -55,7 +55,7 @@ defmodule ExLineWrapper do
       }]
     })
     case HTTPoison.post @message_endpoint, body, header do
-      {:ok, %HTTPoison.Response{status_code: 401}} -> {:error}
+      {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401"}
       {:ok, %HTTPoison.Response{status_code: 200}} -> {:ok}
       {:error, err} -> {:error, err}
     end
